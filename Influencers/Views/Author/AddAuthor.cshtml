@@ -1,0 +1,53 @@
+﻿@model Influencers.BusinessLogic.ViewModels.AuthorViewModel
+@{
+    ViewData["Title"] = "AddAuthor";
+}
+
+<style>
+    body {
+        font-family: Arial;
+        background: #7eedbd;
+    }
+</style>
+<form asp-action="AddAuthor" method="post">
+    <div class="text-center">
+        <h4 class="display-4">Adding author</h4>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-2">
+            Nickname
+        </div>
+        <div class="col-10">
+            <input class="form-control" type="text" asp-for="@Model.Nickname" required/>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-2">
+            Email
+        </div>
+        <div class="col-10">
+            <input class="form-control" type="text" asp-for="@Model.Email" required />
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-2">
+            Votes
+        </div>
+        <div class="col-10">
+            <input class="form-control" type="number" value="0" readonly asp-for="@Model.Votes"/>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-6"></div>
+        <div class="col-2">
+            <button type="submit" class="btn btn-dark">Add</button>
+        </div>
+    </div>
+</form>
+
+
+

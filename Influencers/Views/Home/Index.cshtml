@@ -1,0 +1,80 @@
+﻿@model List<Influencers.BusinessLogic.ViewModels.ArticleViewModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="~/css/preview_posts.css">
+    <style>
+        body {
+            font-family: Arial;
+            background: #7eedbd;
+        }
+        .GFG { 
+            background-color: white; 
+            border: 2px solid black; 
+            color: black; 
+            padding: 5px 10px; 
+            text-align: center; 
+            display: inline-block; 
+            font-size: 20px; 
+            margin: 10px 30px; 
+            cursor: pointer; 
+            text-decoration:none; 
+        }
+        .board {
+            color: black;
+        }
+
+        a:hover {color: green;}
+    </style>
+</head>
+<body>
+
+    <div class="text-center">
+        <h3 class="display-4">Welcome</h3>
+    </div>
+
+    <div class="row">
+        <div class="leftcolumn">
+            @foreach (var article in Model)
+            {
+                <div class="card">
+                    <center><h3>@article.Title</h3></center>
+                    <h5>@article.Date, @article.AuthorName</h5>
+                    <p>@article.Content.Substring(0, 4)...</p>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <input type="submit" value="Up vote" />
+                        </div>
+                        <div class="col-sm-7">
+
+                        </div>
+                        <div class="col-sm-0">
+                              <a asp-action="ReadMore" asp-route-id="@article.ArticleId" asp-controller="Home" class="GFG" style="text-decoration : none">Read more</a>
+                        </div>
+
+                        <div class="col-sm-1">
+                            <input type="submit" value="Edit" />
+                        </div>
+                    </div>
+                </div>
+                <br />
+            }
+        </div>
+        <div class="rightcolumn">
+            <div class="card">
+                <h3><a asp-action="Leaderboard"  asp-controller="Home" class="board" style="text-decoration : none">Popular Authors</a></h3>
+                <ol>
+                    <li>Author1 99999 votes</li>
+                    <li>Author2 23232 votes</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+

@@ -1,0 +1,29 @@
+﻿
+@model Influencers.BusinessLogic.ViewModels.ArticleViewModel
+@{
+    ViewData["Title"] = "ReadMore";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="~/css/preview_posts.css">
+    <style>
+        body {
+            font-family: Arial;
+            background: #7eedbd;
+        }
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div class="leftcolumn">
+            <div class="card">
+                <center><h3>@Model.Title</h3></center>
+                <h5>@Model.Date, @Model.AuthorName</h5>
+                <p>@Model.Content</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
