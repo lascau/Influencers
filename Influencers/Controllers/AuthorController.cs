@@ -35,7 +35,7 @@ namespace Influencers.Controllers
             _authorService.AddAuthor(authorViewModel.Nickname,
                                      authorViewModel.Email,
                                      authorViewModel.Votes);
-           return Redirect(Url.Action("Index", "Home"));
+           return Redirect(Url.Action("AddArticle", "Article"));
         }
     }
 }

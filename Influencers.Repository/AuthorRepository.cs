@@ -49,6 +49,11 @@ namespace Influencers.Repository
             return author.AuthorId;
         }
 
+        public int getVotesBy(int id)
+        {
+            return (int)_dbContext.Author.Find(id).Votes;
+        }
+
         public int NoAuthorsInTable()
         {
             return _dbContext.Author.Count();

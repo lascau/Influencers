@@ -64,7 +64,8 @@ namespace Influencers.BusinessLogic
                 articleViewModel.Date = article.Date;
                 articleViewModel.Title = article.Title;
                 articleViewModel.AuthorName = authorName;
- 
+                articleViewModel.Votes = _authorRepository.getVotesBy((int)article.AuthorId);
+
                 //articleViewModel = article;
 
                 articlesViewModels.Add(articleViewModel);

@@ -7,6 +7,8 @@ namespace Influencers.Repository
     {
         public int GetAuthorIdBy(string email);
 
+        public int getVotesBy(int id);
+
         public int NoAuthorsInTable();
 
     }

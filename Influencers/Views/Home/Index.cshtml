@@ -29,6 +29,26 @@
         }
 
         a:hover {color: green;}
+
+        .scoring1 { 
+            background-color: white; 
+            color: black; 
+            padding: 5px 10px; 
+            display: inline-block; 
+            font-size: 20px; 
+            cursor: pointer; 
+            text-decoration:none; 
+        }
+
+        .scoring2 { 
+            background-color: white; 
+            color: black; 
+            padding: 17px 10px; 
+            display: inline-block; 
+            font-size: 20px; 
+            cursor: pointer; 
+            text-decoration:none; 
+        }
     </style>
 </head>
 <body>
@@ -47,13 +67,28 @@
                     <p>@article.Content.Substring(0, 4)...</p>
                     <div class="row">
                         <div class="col-sm-1">
-                            <input type="submit" value="Up vote" />
+                          
                         </div>
-                        <div class="col-sm-7">
+                        <div class="col-sm-6">
+                            
+                            <div class="scoring1">
+                                <select class="form-control">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+                            </div>
+                            <div class="scoring2">
+                                Score: @article.Votes
+                            </div>
+                                
+                        </div>
 
-                        </div>
+                        
                         <div class="col-sm-0">
-                              <a asp-action="ReadMore" asp-route-id="@article.ArticleId" asp-controller="Home" class="GFG" style="text-decoration : none">Read more</a>
+                            <a asp-action="ReadMore" asp-route-id="@article.ArticleId" asp-controller="Home" class="GFG" style="text-decoration : none">Read more</a>
                         </div>
 
                         <div class="col-sm-1">
