@@ -1,8 +1,11 @@
 ﻿@model List<Influencers.BusinessLogic.ViewModels.ArticleViewModel>
 @{
     ViewData["Title"] = "Home Page";
-    int[] Top3 = new int[3] {-9999999, -9999999, -9999999 };
-    String[] authorsTop3 = new String[3] {"", "", ""};
+    int[] top3Votes = new int[3] {-9999999, -9999999, -9999999 };
+    String[] authorsNameTop3 = new String[3] {"-", "-", "-"};
+    
+    // de incercat - top 3 authori dupa Value(nr de voturi)
+    Dictionary<string, int> Score = new Dictionary<string, int>();
 }
 
 <!DOCTYPE html>
@@ -21,6 +24,30 @@
         <div class="leftcolumn">
             @foreach (var article in Model)
             {
+                if (@article.Votes > top3Votes[0])
+                {
+                    // shiftez totul spre drepta 2 pozitii
+                    for (int index = 2; index >= 1; --index)
+                    {
+                        top3Votes[index] = top3Votes[index - 1];
+                        authorsNameTop3[index] = authorsNameTop3[index - 1];
+                    }
+                    top3Votes[0] = @article.Votes;
+                    authorsNameTop3[0] = @article.AuthorName ;
+                } else if (@article.Votes > top3Votes[1])
+                {
+                    //shiftez spre dreapta 1 pozitie
+                    top3Votes[2] = top3Votes[1];
+                    authorsNameTop3[2] = authorsNameTop3[1];
+
+                    top3Votes[1] = @article.Votes;
+                    authorsNameTop3[1] = @article.AuthorName;
+                } else if (@article.Votes > top3Votes[2])
+                {
+                    top3Votes[2] = @article.Votes;
+                    authorsNameTop3[2] = @article.AuthorName;
+                }
+
                 <div class="card">
                     <center><h3>@article.Title</h3></center>
                     <h5>@article.Date, @article.AuthorName</h5>
@@ -29,16 +56,17 @@
                         <div class="col-sm-6">
 
                             <div class="scoring1">
-                                <form asp-controller="Author" asp-action="SaveScore" method="post">
-                                    <input type="hidden" asp-for="@article.Email" />
                                     <select id="@article.ArticleId" onchange="f(@article.ArticleId)" class="form-control" asp-for="@article.Votes">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                </form>
+                                        <option value="1"></option>
+                                        <option value="-5">😡</option>
+                                        <option value="-2">😱</option>
+                                        <option value="-1">😢</option>
+                                        <option value="0">🙏</option>
+                                        <option value="1">👽</option>
+                                        <option value="2">😜</option>
+                                        <option value="10">😂</option>
+                                        <option value="50">🚀</option>
+                                    </select> 
                             </div>
                             <div class="scoring2">
                                 Score: @article.Votes
@@ -57,15 +85,19 @@
                         </div>
                     </div>
                 </div>
-                <br />
+
             }
+                <br />
         </div>
         <div class="rightcolumn">
             <div class="card">
-                <h3><a asp-action="Leaderboard" asp-controller="Home" class="board" style="text-decoration : none">Popular Authors</a></h3>
+                <h4><a asp-action="Leaderboard" asp-controller="Home" class="board" style="text-decoration : none">Popular influencers</a></h4>
                 <ol>
-                    <li>Author1 99999 votes</li>
-                    <li>Author2 23232 votes</li>
+                    @for (int index = 0; index < 3; ++index)
+                    {
+                        <li>@authorsNameTop3[index] Score:@top3Votes[index]</li>
+                    }
+
                 </ol>
             </div>
         </div>
@@ -84,12 +116,15 @@
         let x = $('#' + articleId).val();
         //console.log([articleId, x]);
         $.ajax({
-            method: "POST", // request type here
-            data: { articleId: articleId, votes: x },
-            url: "https://localhost:44379/Home/SaveVote"   // url here
-        }).done(function (data) { // callback here
-            console.log(data); // render what you want here
-        })
+            type: "POST", // request type here
+            data: JSON.stringify({ articleId: articleId, votes: +x }),
+            contentType: "application/json",
+            url: "http://localhost:57090/Home/sendvote",   // url here
+            success: function (data) { // callback here
+                location.reload();
+                //console.log(data); // render what you want here
+            }
+        });
     };
 
     </script>  

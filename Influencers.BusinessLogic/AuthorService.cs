@@ -10,10 +10,12 @@ namespace Influencers.BusinessLogic
     public class AuthorService : IAuthorService
     {
         private IAuthorRepository _authorRepository;
+        private IArticleRepository _articleRepository;
 
-        public AuthorService(IAuthorRepository authorRepository)
+        public AuthorService(IAuthorRepository authorRepository, IArticleRepository articleRepository)
         {
             _authorRepository = authorRepository;
+            _articleRepository = articleRepository;
         }
 
         public void AddAuthor(string nickname, string email, int? votes)
@@ -60,9 +62,10 @@ namespace Influencers.BusinessLogic
             return (_authorRepository.GetAuthorIdBy(email) != -1);
         }
 
-        public void UpdateScoreByAddingWith(int id, int score)
+        public void UpdateScoreByAddingWith(int articleId, int score)
         {
-            var author = _authorRepository.Get(id);
+            var article = _articleRepository.Get(articleId);
+            var author = _authorRepository.Get((int)article.AuthorId);
             author.Votes += score;
             _authorRepository.Update(author);
         }

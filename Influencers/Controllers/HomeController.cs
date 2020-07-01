@@ -71,11 +71,17 @@ namespace Influencers.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        [HttpPost]
-        public IActionResult SendVote(VoteDTO voteDTO)
+        [HttpGet]
+        public IActionResult SendVote()
         {
-            //
-            return Ok();
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult SendVote([FromBody]VoteDTO voteDTO)
+        {
+            _authorSerivce.UpdateScoreByAddingWith(voteDTO.ArticleId, voteDTO.Votes);
+            return Redirect(Url.Action("Index", "Home"));
         } 
     }
 }
