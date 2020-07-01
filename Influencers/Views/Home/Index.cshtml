@@ -1,55 +1,15 @@
 ﻿@model List<Influencers.BusinessLogic.ViewModels.ArticleViewModel>
 @{
     ViewData["Title"] = "Home Page";
+    int[] Top3 = new int[3] {-9999999, -9999999, -9999999 };
+    String[] authorsTop3 = new String[3] {"", "", ""};
 }
 
 <!DOCTYPE html>
 <html>
 <head>
     <link rel="stylesheet" href="~/css/preview_posts.css">
-    <style>
-        body {
-            font-family: Arial;
-            background: #7eedbd;
-        }
-        .GFG { 
-            background-color: white; 
-            border: 2px solid black; 
-            color: black; 
-            padding: 5px 10px; 
-            text-align: center; 
-            display: inline-block; 
-            font-size: 20px; 
-            margin: 10px 30px; 
-            cursor: pointer; 
-            text-decoration:none; 
-        }
-        .board {
-            color: black;
-        }
-
-        a:hover {color: green;}
-
-        .scoring1 { 
-            background-color: white; 
-            color: black; 
-            padding: 5px 10px; 
-            display: inline-block; 
-            font-size: 20px; 
-            cursor: pointer; 
-            text-decoration:none; 
-        }
-
-        .scoring2 { 
-            background-color: white; 
-            color: black; 
-            padding: 17px 10px; 
-            display: inline-block; 
-            font-size: 20px; 
-            cursor: pointer; 
-            text-decoration:none; 
-        }
-    </style>
+    <link rel="stylesheet" href="~/css/buttons_posts.css">
 </head>
 <body>
 
@@ -66,33 +26,34 @@
                     <h5>@article.Date, @article.AuthorName</h5>
                     <p>@article.Content.Substring(0, 4)...</p>
                     <div class="row">
-                        <div class="col-sm-1">
-                          
-                        </div>
                         <div class="col-sm-6">
-                            
+
                             <div class="scoring1">
-                                <select class="form-control">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
+                                <form asp-controller="Author" asp-action="SaveScore" method="post">
+                                    <input type="hidden" asp-for="@article.Email" />
+                                    <select id="@article.ArticleId" onchange="f(@article.ArticleId)" class="form-control" asp-for="@article.Votes">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </form>
                             </div>
                             <div class="scoring2">
                                 Score: @article.Votes
                             </div>
-                                
+
                         </div>
 
-                        
+
                         <div class="col-sm-0">
                             <a asp-action="ReadMore" asp-route-id="@article.ArticleId" asp-controller="Home" class="GFG" style="text-decoration : none">Read more</a>
                         </div>
 
-                        <div class="col-sm-1">
-                            <input type="submit" value="Edit" />
+                        <div class="col-sm-0">
+                            <a asp-action="EditThis" asp-route-id="@article.ArticleId" asp-controller="Home" class="GFG" style="text-decoration : none">Edit this</a>
+
                         </div>
                     </div>
                 </div>
@@ -101,7 +62,7 @@
         </div>
         <div class="rightcolumn">
             <div class="card">
-                <h3><a asp-action="Leaderboard"  asp-controller="Home" class="board" style="text-decoration : none">Popular Authors</a></h3>
+                <h3><a asp-action="Leaderboard" asp-controller="Home" class="board" style="text-decoration : none">Popular Authors</a></h3>
                 <ol>
                     <li>Author1 99999 votes</li>
                     <li>Author2 23232 votes</li>
@@ -112,4 +73,27 @@
 
 </body>
 </html>
+
+@section scripts{
+    <script src="~/lib/jquery/dist/jquery.min.js"> </script>
+<script>      
+// var e = document.getElementById("article_Votes");
+        // var selectedScore = e.options[e.selectedIndex].value;
+        //console.log(selectedScore);
+    function f(articleId) {
+        let x = $('#' + articleId).val();
+        //console.log([articleId, x]);
+        $.ajax({
+            method: "POST", // request type here
+            data: { articleId: articleId, votes: x },
+            url: "https://localhost:44379/Home/SaveVote"   // url here
+        }).done(function (data) { // callback here
+            console.log(data); // render what you want here
+        })
+    };
+
+    </script>  
+
+
+}
 

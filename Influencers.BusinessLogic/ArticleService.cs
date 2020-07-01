@@ -81,5 +81,12 @@ namespace Influencers.BusinessLogic
             return articlesViewModels;
         }
 
+        public void UpdateArticle(int articleId, string title, string content)
+        {
+            var article = _articleRepository.Get(articleId);
+            article.Title = title;
+            article.Content = content;
+            _articleRepository.Update(article);
+        }
     }
 }

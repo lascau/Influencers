@@ -11,6 +11,7 @@
     }
 </style>
 <form asp-action="AddArticle" method="post">
+    <input type="hidden" class="form-control" value="@DateTime.Now" asp-for="@Model.Date" />
     <div class="text-center">
         <h4 class="display-4">Adding article</h4>
     </div>
@@ -20,7 +21,7 @@
             Title
         </div>
         <div class="col-10">
-            <input class="form-control" type="text" asp-for="@Model.Title" required/>
+            <input class="form-control" type="text" asp-for="@Model.Title" required />
         </div>
     </div>
     <br>
@@ -29,7 +30,7 @@
             Email
         </div>
         <div class="col-10">
-            <input class="form-control" type="text" asp-for="@Model.Email"/>
+            <input class="form-control" type="text" asp-for="@Model.Email" />
         </div>
     </div>
     <br>
@@ -38,16 +39,7 @@
             Content
         </div>
         <div class="col-10">
-            <input class="form-control" rows="5" type="text" asp-for="@Model.Content" required/>
-        </div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col-2">
-            Date
-        </div>
-        <div class="col-10">
-            <input class="form-control" type="text" value="@DateTime.Now" asp-for="@Model.Date"/>
+            <textarea class="form-control" rows="5" asp-for="@Model.Content" required> </textarea>
         </div>
     </div>
     <br>

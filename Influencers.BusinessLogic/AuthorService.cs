@@ -28,6 +28,16 @@ namespace Influencers.BusinessLogic
                 });
         }
 
+        public Author GetAuthorBy(int id)
+        {
+            return _authorRepository.Get(id);
+        }
+
+        public int GetAuthorIdBy(string email)
+        {
+            return _authorRepository.GetAuthorIdBy(email);
+        }
+
         public List<AuthorViewModel> GetAuthors()
         {
             var authors = _authorRepository.GetAll();
@@ -48,6 +58,13 @@ namespace Influencers.BusinessLogic
         public bool isThereAnAuthorWithEmail(string email)
         {
             return (_authorRepository.GetAuthorIdBy(email) != -1);
+        }
+
+        public void UpdateScoreByAddingWith(int id, int score)
+        {
+            var author = _authorRepository.Get(id);
+            author.Votes += score;
+            _authorRepository.Update(author);
         }
     }
 }

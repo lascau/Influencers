@@ -15,5 +15,6 @@ namespace Influencers.BusinessLogic
         public void AddArticle(string email, string title, string content, DateTime date);
 
         //Edit article
+        public void UpdateArticle(int articleId, string title, string content);
     }
 }

@@ -28,19 +28,12 @@
             Email
         </div>
         <div class="col-10">
+            
             <input class="form-control" type="text" asp-for="@Model.Email" required />
+            <span asp-validation-for="@Model.Email" class="text-danger"></span>
         </div>
     </div>
-    <br>
-    <div class="row">
-        <div class="col-2">
-            Votes
-        </div>
-        <div class="col-10">
-            <input class="form-control" type="number" value="0" readonly asp-for="@Model.Votes"/>
-        </div>
-    </div>
-    <br>
+    <br />
     <div class="row">
         <div class="col-6"></div>
         <div class="col-2">

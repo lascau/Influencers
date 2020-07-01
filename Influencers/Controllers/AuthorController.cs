@@ -32,10 +32,22 @@ namespace Influencers.Controllers
         [HttpPost]
         public IActionResult AddAuthor([FromForm]AuthorViewModel authorViewModel)
         {
-            _authorService.AddAuthor(authorViewModel.Nickname,
+            if (ModelState.IsValid)
+            {
+                _authorService.AddAuthor(authorViewModel.Nickname,
                                      authorViewModel.Email,
-                                     authorViewModel.Votes);
-           return Redirect(Url.Action("AddArticle", "Article"));
+                                     0);
+                return Redirect(Url.Action("AddArticle", "Article"));
+            }
+            return View(authorViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult SaveScore([FromForm(Name = "article.Email")] string email, [FromForm(Name = "article.Votes")] int score)
+        {
+            var authorId = _authorService.GetAuthorIdBy(email);
+            _authorService.UpdateScoreByAddingWith(authorId, score);
+            return Redirect(Url.Action("Index", "Home"));
         }
     }
 }

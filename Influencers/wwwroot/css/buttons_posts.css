@@ -1,0 +1,45 @@
+﻿body {
+    font-family: Arial;
+    background: #7eedbd;
+}
+
+.GFG {
+    background-color: white;
+    border: 2px solid black;
+    color: black;
+    padding: 5px 20px;
+    text-align: center;
+    display: inline-block;
+    font-size: 20px;
+    margin: 10px 30px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.board {
+    color: black;
+}
+
+a:hover {
+    color: green;
+}
+
+.scoring1 {
+    background-color: white;
+    color: black;
+    padding: 5px 10px;
+    display: inline-block;
+    font-size: 20px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.scoring2 {
+    background-color: white;
+    color: black;
+    padding: 17px 10px;
+    display: inline-block;
+    font-size: 20px;
+    cursor: pointer;
+    text-decoration: none;
+}

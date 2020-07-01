@@ -7,6 +7,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="~/css/preview_posts.css">
+    <link rel="stylesheet" href="~/css/buttons_posts.css">
     <style>
         body {
             font-family: Arial;
@@ -21,6 +22,10 @@
                 <center><h3>@Model.Title</h3></center>
                 <h5>@Model.Date, @Model.AuthorName</h5>
                 <p>@Model.Content</p>
+                <div class="col-sm-0">
+                    <a asp-action="EditThis" asp-route-id="@Model.ArticleId" asp-controller="Home" class="GFG" style="text-decoration : none">Edit this</a>
+
+                </div>
             </div>
         </div>
     </div>

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Influencers.Models;
 using Influencers.BusinessLogic;
+using Influencers.BusinessLogic.DTOs;
+using Influencers.BusinessLogic.ViewModels;
 
 namespace Influencers.Controllers
 {
@@ -35,6 +37,23 @@ namespace Influencers.Controllers
         }
 
         [HttpGet]
+        public IActionResult EditThis(int id)
+        {
+            var article = _articleService.GetArticleBy(id);
+            return View(article); 
+        }
+
+        [HttpPost]
+        public IActionResult EditThis([FromForm]ArticleViewModel articleViewModel, int id)
+        {
+            articleViewModel.ArticleId = id;
+            _articleService.UpdateArticle(articleViewModel.ArticleId,
+                                            articleViewModel.Title,
+                                            articleViewModel.Content);
+            return Redirect(Url.Action("Index", "Home"));
+        }
+
+        [HttpGet]
         public IActionResult Leaderboard()
         {
             var authors = _authorSerivce.GetAuthors();
@@ -51,5 +70,12 @@ namespace Influencers.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [HttpPost]
+        public IActionResult SendVote(VoteDTO voteDTO)
+        {
+            //
+            return Ok();
+        } 
     }
 }
