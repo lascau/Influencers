@@ -10,6 +10,8 @@
     }
 </style>
 <form asp-action="AddAuthor" method="post">
+    <input type="hidden" asp-for="ArticleContent" id="content-container"/>
+    <input type="hidden" asp-for="ArticleTitle" id="title-container"/>
     <div class="text-center">
         <h4 class="display-4">Adding author</h4>
     </div>
@@ -19,7 +21,7 @@
             Nickname
         </div>
         <div class="col-10">
-            <input class="form-control" type="text" asp-for="@Model.Nickname" required/>
+            <input class="form-control" type="text" asp-for="@Model.Nickname" required />
         </div>
     </div>
     <br>
@@ -28,7 +30,7 @@
             Email
         </div>
         <div class="col-10">
-            
+
             <input class="form-control" type="text" asp-for="@Model.Email" required />
             <span asp-validation-for="@Model.Email" class="text-danger"></span>
         </div>
@@ -41,6 +43,21 @@
         </div>
     </div>
 </form>
+
+@section scripts {
+    <script src="~/lib/jquery-cookie/jquery.cookie.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            let contentValue = $.cookie("content");
+            let titleValue = $.cookie("title");
+            $("#content-container").val(contentValue);
+            $("#title-container").val(titleValue);
+        })
+
+    </script>
+
+}
 
 
 

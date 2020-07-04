@@ -12,10 +12,12 @@ namespace Influencers.Controllers
     {
         
         private IAuthorService _authorService;
+        private IArticleService _articleService;
 
-        public AuthorController(IAuthorService authorService)
+        public AuthorController(IAuthorService authorService, IArticleService articleService)
         {
             _authorService = authorService;
+            _articleService = articleService;
         }
 
         public IActionResult Index()
@@ -37,7 +39,8 @@ namespace Influencers.Controllers
                 _authorService.AddAuthor(authorViewModel.Nickname,
                                      authorViewModel.Email,
                                      0);
-                return Redirect(Url.Action("AddArticle", "Article"));
+                _articleService.AddArticle(authorViewModel.Email, authorViewModel.ArticleTitle, authorViewModel.ArticleContent, DateTime.UtcNow);
+                return Redirect(Url.Action("Index", "Home"));
             }
             return View(authorViewModel);
         }

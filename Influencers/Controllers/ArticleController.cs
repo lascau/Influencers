@@ -36,7 +36,7 @@ namespace Influencers.Controllers
         {
             if (!_authorService.isThereAnAuthorWithEmail(articleViewModel.Email))
             {
-                return Redirect(Url.Action("AddAuthor", "Author"));
+                return Redirect(Url.Action("AddAuthor", "Author", articleViewModel));
             }
             _articleService.AddArticle(articleViewModel.Email,
                                        articleViewModel.Title,

@@ -20,7 +20,7 @@
         <div class="leftcolumn">
             <div class="card">
                 <center><h3>@Model.Title</h3></center>
-                <h5>@Model.Date, @Model.AuthorName</h5>
+                <h5>@Model.Date.Value.ToShortDateString(), @Model.AuthorName</h5>
                 <p>@Model.Content</p>
                 <div class="col-sm-0">
                     <a asp-action="EditThis" asp-route-id="@Model.ArticleId" asp-controller="Home" class="GFG" style="text-decoration : none">Edit this</a>

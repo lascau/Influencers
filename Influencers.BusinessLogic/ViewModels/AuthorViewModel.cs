@@ -12,7 +12,11 @@ namespace Influencers.BusinessLogic.ViewModels
         [Required]
         [EmailAddressAttribute]
         public string Email { get; set; }
-        
+
         public int? Votes { get; set; }
+
+        public string ArticleContent {get; set;}
+
+        public string ArticleTitle { get; set; }
     }
 }

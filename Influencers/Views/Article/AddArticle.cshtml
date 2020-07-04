@@ -21,7 +21,7 @@
             Title
         </div>
         <div class="col-10">
-            <input class="form-control" type="text" asp-for="@Model.Title" required />
+            <input class="form-control" type="text" id="title-container" asp-for="@Model.Title" required />
         </div>
     </div>
     <br>
@@ -30,7 +30,7 @@
             Email
         </div>
         <div class="col-10">
-            <input class="form-control" type="text" asp-for="@Model.Email" />
+            <input class="form-control" type="text" id="email-container" asp-for="@Model.Email" />
         </div>
     </div>
     <br>
@@ -39,15 +39,36 @@
             Content
         </div>
         <div class="col-10">
-            <textarea class="form-control" rows="5" asp-for="@Model.Content" required> </textarea>
+            <textarea class="form-control" rows="5" id="content-container"asp-for="@Model.Content" required> </textarea>
         </div>
     </div>
     <br>
     <div class="row">
         <div class="col-6"></div>
         <div class="col-2">
-            <button type="submit" class="btn btn-dark">Add</button>
+            <button type="submit" class="btn btn-dark" id="addArticleButton">Add</button>
         </div>
     </div>
 </form>
+
+@section scripts{
+    <script src="~/lib/jquery-cookie/jquery.cookie.js"></script>
+    <script>
+        $("#addArticleButton").on("click", function () {
+            var contentValue = $("#content-container").val();
+            $.cookie("content", `${contentValue}`, {path:"/"});
+
+            var titleValue = $("#title-container").val();
+            $.cookie("title", `${titleValue}`, {path:"/"});
+
+          //  var emailValue = $("#email-container").val();
+            //$.cookie("email", `${emailValue}`);
+
+            console.log($.cookie("content"));
+            console.log($.cookie("title"));
+            //console.log($.cookie("email"));
+
+        });
+    </script>
+}
 
