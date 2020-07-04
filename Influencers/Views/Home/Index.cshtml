@@ -112,9 +112,9 @@
 
                     </div>
                 </div>
-                <div style="margin-left: 410px;">
+                <div style="margin-left: 410px; ">
                     <div class="row">
-                        <div id="$$@article.ArticleId" style="font-size:150%;">
+                        <div id="$$@article.ArticleId" style="font-size:150%; display: flex;">
 
                             <script>
                                 var iterable = new Map([['-10', '🍆'], ['-5', '😡'], ['-2', '😱'], ['-1', '😢'],
@@ -126,12 +126,24 @@
                                 for (const entry of iterable) {
                                     if (document.cookie.split(';').some((item) => item.trim().startsWith(entry[0] + '@article.ArticleId='))) {
                                         votesOnArticle.push(entry[1]);
+                                        var div = document.createElement("div");
+                                        div.id = @article.ArticleId + entry[0]
+                                        div.innerHTML = entry[1];
+                                        div.addEventListener('click', function () {
+                                           //console.log(entry[0] + @article.ArticleId + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;");
+                                            document.cookie = entry[0] + @article.ArticleId + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                                            undo(@article.ArticleId, entry[0]);
+                                            //location.reload();
+                                        });
+                                        document.getElementById("$$@article.ArticleId").appendChild(div)
                                         //console.log([@article.ArticleId, entry[1]]);
                                     }   
                                 }
-                                var choosenEmojis = votesOnArticle.join(' ');
+                               // var choosenEmojis = votesOnArticle.join(' ');
    
-                                document.getElementById("$$@article.ArticleId").innerHTML = choosenEmojis;
+                                //document.getElementById("$$@article.ArticleId").innerHTML = choosenEmojis;
+
+
                                 /*
                                 for (const entry of iterable) {
                                     console.log(entry[0]);
@@ -197,7 +209,7 @@
                 $.cookie(x + articleId, 'orice');
                 $.ajax({
                     type: "POST", // request type here
-                    data: JSON.stringify({ articleId: articleId, votes: +x }),
+                    data: JSON.stringify({ articleId: articleId, votes: parseInt(x)}),
                     contentType: "application/json",
                     url: "http://localhost:57090/Home/sendvote",   // url here
                     success: function (data) { // callback here
@@ -211,6 +223,23 @@
             } else {
                 
             }
+        };
+
+        function undo(articleId, score) {           
+                
+            $.ajax({
+                    type: "POST", // request type here
+                    data: JSON.stringify({ articleId: articleId, votes: -parseInt(score) }),
+                    contentType: "application/json",
+                    url: "http://localhost:57090/Home/sendvote",   // url here
+                    success: function (data) { // callback here
+                        location.reload();
+                        //console.log(map[x]);
+                        //$("#emo").load(" #emo");
+                      //  document.getElementById('emo').innerHTML = map[x];
+                        //console.log(data); // render what you want here
+                    }
+                });   
         };
 
         
