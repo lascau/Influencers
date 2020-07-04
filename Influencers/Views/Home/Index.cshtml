@@ -5,21 +5,6 @@
     int rank = 0;
     SortedDictionary<int, string> authors = new SortedDictionary<int, string>();
     
-    Dictionary<string, string> mapVotesToEmoji = new Dictionary<string, string>()
-    {
-        {"-10", "🍆"},
-        {"-5", "😡" },
-        {"-2", "😱" },
-        {"-1", "😢" },
-        {"0", "🙏" },
-        {"1", "👽" },
-        {"2", "😜"},
-        {"10", "😂"},
-        {"50", "🚀" },
-        {"69", "🔥"},
-        {"100", "❤️"}
-
-    };
 }
 
 <!DOCTYPE html>
@@ -121,35 +106,20 @@
                                     ['0', '🙏'], ['1', '👽'], ['2', '😜'], ['10', '😂'],
                                                 ['50', '🚀'], ['69', '🔥'], ['100', '❤️']]);
 
-                                var votesOnArticle = []
-                                //console.log(@article.ArticleId);
                                 for (const entry of iterable) {
                                     if (document.cookie.split(';').some((item) => item.trim().startsWith(entry[0] + '@article.ArticleId='))) {
-                                        votesOnArticle.push(entry[1]);
                                         var div = document.createElement("div");
                                         div.id = @article.ArticleId + entry[0]
                                         div.innerHTML = entry[1];
-                                        div.addEventListener('click', function () {
-                                           //console.log(entry[0] + @article.ArticleId + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;");
+                                        div.addEventListener('click', function () {                                        
                                             document.cookie = entry[0] + @article.ArticleId + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                                             undo(@article.ArticleId, entry[0]);
-                                            //location.reload();
                                         });
                                         document.getElementById("$$@article.ArticleId").appendChild(div)
-                                        //console.log([@article.ArticleId, entry[1]]);
+
                                     }   
                                 }
-                               // var choosenEmojis = votesOnArticle.join(' ');
-   
-                                //document.getElementById("$$@article.ArticleId").innerHTML = choosenEmojis;
 
-
-                                /*
-                                for (const entry of iterable) {
-                                    console.log(entry[0]);
-
-                                }
-                                */
                             </script>
     
                         </div>
@@ -187,11 +157,12 @@
     <script>
 
         /*
+        //remove junks cookie
         var cookies = $.cookie();
         for(var cookie in cookies) {
             $.removeCookie(cookie);
         }
-  */
+        */
 
         function showEmoji(articleId) {
             for(var cookie in cookies) {
@@ -202,9 +173,7 @@
         function f(articleId) {
 
             let x = $('#' + articleId).val();
-           // var cookieVote = $.cookie();
-           // console.log(map[x]);
-            //console.log($.cookie(x));
+ 
             if (typeof $.cookie(x + articleId) === 'undefined') {
                 $.cookie(x + articleId, 'orice');
                 $.ajax({
@@ -214,15 +183,9 @@
                     url: "http://localhost:57090/Home/sendvote",   // url here
                     success: function (data) { // callback here
                         location.reload();
-                        //console.log(map[x]);
-                        //$("#emo").load(" #emo");
-                      //  document.getElementById('emo').innerHTML = map[x];
-                        //console.log(data); // render what you want here
                     }
                 });   
-            } else {
-                
-            }
+            } 
         };
 
         function undo(articleId, score) {           
@@ -234,10 +197,6 @@
                     url: "http://localhost:57090/Home/sendvote",   // url here
                     success: function (data) { // callback here
                         location.reload();
-                        //console.log(map[x]);
-                        //$("#emo").load(" #emo");
-                      //  document.getElementById('emo').innerHTML = map[x];
-                        //console.log(data); // render what you want here
                     }
                 });   
         };
