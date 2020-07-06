@@ -1,46 +1,17 @@
 ﻿@model List<Influencers.BusinessLogic.ViewModels.ArticleViewModel>
 @{
     ViewData["Title"] = "Home Page";
-
-    int rank = 0;
-    SortedDictionary<int, string> authors = new SortedDictionary<int, string>();
-    
+   
 }
 
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-        .bootstrap-select .dropdown-menu {
-            padding: 3px;
-        }
-
-            .bootstrap-select .dropdown-menu > li {
-                display: inline-block;
-                float: none;
-            }
-
-            .bootstrap-select .dropdown-menu > li {
-                width: 50%;
-            }
-
-                .bootstrap-select .dropdown-menu > li > a {
-                    font-size: 20px;
-                }
-
-        ol {
-            list-style: none;
-            padding: 0;
-        }
-
-        li {
-            padding: 5px 10px;
-            background-color: #EEEEEE;
-            border: 1px solid #DDDDDD;
-        }
-    </style>
     <link rel="stylesheet" href="~/css/preview_posts.css">
     <link rel="stylesheet" href="~/css/buttons_posts.css">
+    <script>
+        var authorsArray = [];
+    </script>
 </head>
 <body>
 
@@ -52,15 +23,10 @@
         <div class="leftcolumn">
             @foreach (var article in Model)
             {
-                if (!authors.ContainsValue(@article.AuthorName))
-                {
-                    authors.Add(@article.Votes, @article.AuthorName);
-                }
-
             <div class="card">
-                <center><h3>@article.Title</h3></center>
+                <center><h3 style="font-size:40px; font-family:'Arial'">@article.Title</h3></center>
                 <h5>@article.Date.Value.ToShortDateString() @article.AuthorName</h5>
-                <p>@article.Content.Substring(0, @article.Content.Length / 3)...</p>
+                <p style="font-size:25px; font-family:'Times New Roman'; color:#827e7e;">@article.Content.Substring(0, @article.Content.Length / 3)...</p>
                 <div class="row">
                     <div class="col-sm-6">
 
@@ -97,23 +63,26 @@
 
                     </div>
                 </div>
-                <div style="margin-left: 410px; ">
+                <div style="margin-left: 155px; ">
                     <div class="row">
                         <div id="$$@article.ArticleId" style="font-size:150%; display: flex;">
 
                             <script>
-                                var iterable = new Map([['-10', '🍆'], ['-5', '😡'], ['-2', '😱'], ['-1', '😢'],
+                                authorsArray.push(['@article.AuthorName', '@article.Votes']);
+
+                                var emojis = new Map([['-10', '🍆'], ['-5', '😡'], ['-2', '😱'], ['-1', '😢'],
                                     ['0', '🙏'], ['1', '👽'], ['2', '😜'], ['10', '😂'],
                                                 ['50', '🚀'], ['69', '🔥'], ['100', '❤️']]);
-
-                                for (const entry of iterable) {
-                                    if (document.cookie.split(';').some((item) => item.trim().startsWith(entry[0] + '@article.ArticleId='))) {
+                                // show emojis in decreasing order after value from left to right
+                                for (const emoji of Array.from(emojis).reverse()) {
+                                    if (document.cookie.split(';').some((item) => item.trim().startsWith(emoji[0] + '@article.ArticleId='))) {
+                                        //console.log('A intrat!');
                                         var div = document.createElement("div");
-                                        div.id = @article.ArticleId + entry[0]
-                                        div.innerHTML = entry[1];
+                                        div.id = @article.ArticleId + emoji[0]
+                                        div.innerHTML = emoji[1];
                                         div.addEventListener('click', function () {                                        
-                                            document.cookie = entry[0] + @article.ArticleId + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                                            undo(@article.ArticleId, entry[0]);
+                                            document.cookie = emoji[0] + @article.ArticleId + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                                            undoVote(@article.ArticleId, emoji[0]);
                                         });
                                         document.getElementById("$$@article.ArticleId").appendChild(div)
 
@@ -134,14 +103,27 @@
         <div class="rightcolumn">
             <div class="card">
                 <h3><a asp-action="Leaderboard" asp-controller="Home" class="board" style="text-decoration : none">Popular influencers &emsp; &emsp; &emsp;🏆</a></h3>
-                <ol>
-                    @for (int index = authors.Count - 1; index >= authors.Count - 3; --index)
-                    {
-                        ++@rank;
-                        <li><h4>@rank.  @authors.ElementAt(index).Value    @authors.ElementAt(index).Key</h4></li>
-                    }
-
-                </ol>
+                <div id="top3" style="font-size:150%">
+                    
+                    <script>
+                        // sortez descrescator dupa voturi
+                        authorsArray.sort((author1, author2) => parseInt(author2[1]) - parseInt(author1[1]));
+                        // creez o mapa din array-ul de authori sa scap de duplicate
+                        const authorsMap = new Map(authorsArray);
+                        var rank = 1;
+                        for (const author of authorsMap) {
+                            //console.log([author[0], author[1]])
+                             var div = document.createElement("div");
+                              div.id = author[0];
+                            div.innerHTML = rank + '. ' + author[0] + ' ' + author[1];
+                            document.getElementById("top3").appendChild(div)
+                            ++rank;
+                            if (rank == 4) {
+                                break;
+                            }
+                        }
+                    </script>
+                </div>
             </div>
         </div>
     </div>
@@ -150,7 +132,8 @@
 </html>
 
 @section scripts{
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
     <script src="~/lib/jquery-cookie/jquery.cookie.js"></script>
@@ -162,20 +145,14 @@
         for(var cookie in cookies) {
             $.removeCookie(cookie);
         }
-        */
-
-        function showEmoji(articleId) {
-            for(var cookie in cookies) {
-                console.log(cookie + '*');
-            }
-        }
+       */
 
         function f(articleId) {
 
             let x = $('#' + articleId).val();
  
             if (typeof $.cookie(x + articleId) === 'undefined') {
-                $.cookie(x + articleId, 'orice');
+                $.cookie(x + articleId, 'orice', { path: '/' });
                 $.ajax({
                     type: "POST", // request type here
                     data: JSON.stringify({ articleId: articleId, votes: parseInt(x)}),
@@ -188,7 +165,7 @@
             } 
         };
 
-        function undo(articleId, score) {           
+        function undoVote(articleId, score) {           
                 
             $.ajax({
                     type: "POST", // request type here

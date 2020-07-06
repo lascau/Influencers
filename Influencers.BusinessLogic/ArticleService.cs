@@ -35,7 +35,9 @@ namespace Influencers.BusinessLogic
         public ArticleViewModel GetArticleBy(int id)
         {
             var article =  _articleRepository.Get(id);
-            var authorName = _authorRepository.Get((int)article.AuthorId).Nickname;
+            var author = _authorRepository.Get((int)article.AuthorId);
+            var authorName = author.Nickname;
+            var authorVotes = author.Votes;
             var articleViewModel = new ArticleViewModel();
             
             articleViewModel.ArticleId = article.ArticleId;
@@ -43,6 +45,7 @@ namespace Influencers.BusinessLogic
             articleViewModel.Date = article.Date;
             articleViewModel.Title = article.Title;
             articleViewModel.AuthorName = authorName;
+            articleViewModel.Votes = (int)authorVotes;
 
             return articleViewModel;
         }

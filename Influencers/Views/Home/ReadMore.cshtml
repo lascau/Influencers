@@ -21,14 +21,122 @@
             <div class="card">
                 <center><h3>@Model.Title</h3></center>
                 <h5>@Model.Date.Value.ToShortDateString(), @Model.AuthorName</h5>
-                <p>@Model.Content</p>
-                <div class="col-sm-0">
-                    <a asp-action="EditThis" asp-route-id="@Model.ArticleId" asp-controller="Home" class="GFG" style="text-decoration : none">Edit this</a>
+                <p style="font-size:25px; font-family:'Times New Roman'; color:#827e7e;">@Model.Content</p>
 
+                <div class="col-sm-30">
+
+                    <div class="scoring1">
+                        <div class="form-group col-sm-30">
+                            <select id="@Model.ArticleId" onchange="f(@Model.ArticleId)" class="form-control" asp-for="@Model.Votes" style="font-size:100%;">
+                                <option value="0"></option>
+                                <option value="-10">🍆-10</option>
+                                <option value="-5">😡-5</option>
+                                <option value="-2">😱-2</option>
+                                <option value="-1">😢-1</option>
+                                <option value="0">🙏0</option>
+                                <option value="1">👽1</option>
+                                <option value="2">😜2</option>
+                                <option value="10">😂10</option>
+                                <option value="50">🚀50</option>
+                                <option value="69">🔥69</option>
+                                <option value="100">❤️100</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="scoring2">
+                        Score: @Model.Votes
+                    </div>
+                    <div class="scoring2">
+                        <a asp-action="EditThis" asp-route-id="@Model.ArticleId" asp-controller="Home" class="GFG" style="text-decoration : none">Edit this</a>
+                    </div>
                 </div>
+                <div style="margin-left: 155px; ">
+                    <div class="row">
+                        <div id="$$@Model.ArticleId" style="font-size:150%; display: flex;">
+
+                            <script>
+
+                                var emojis = new Map([['-10', '🍆'], ['-5', '😡'], ['-2', '😱'], ['-1', '😢'],
+                                    ['0', '🙏'], ['1', '👽'], ['2', '😜'], ['10', '😂'],
+                                                ['50', '🚀'], ['69', '🔥'], ['100', '❤️']]);
+                                // show emojis in decreasing order after value from left to right
+                                for (const emoji of Array.from(emojis).reverse()) {
+                                    if (document.cookie.split(';').some((item) => item.trim().startsWith(emoji[0] + '@Model.ArticleId='))) {
+                                        var div = document.createElement("div");
+                                        div.id = @Model.ArticleId + emoji[0]
+                                        div.innerHTML = emoji[1];
+                                        div.addEventListener('click', function () {
+                                            document.cookie = emoji[0] + @Model.ArticleId + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                                            undoVote(@Model.ArticleId, emoji[0]);
+                                        });
+                                        document.getElementById("$$@Model.ArticleId").appendChild(div)
+
+                                    }
+                                }
+
+                            </script>
+                        </div>
+
+                    </div>
+                    
+                </div>
+
             </div>
         </div>
     </div>
 </body>
 </html>
+
+@section scripts{
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
+    <script src="~/lib/jquery-cookie/jquery.cookie.js"></script>
+    <script>
+
+        /*
+        //remove junks cookie
+        var cookies = $.cookie();
+        for(var cookie in cookies) {
+            $.removeCookie(cookie);
+        }
+   */
+
+        //console.log(@Model.Votes)
+        function f(articleId) {
+
+            let x = $('#' + articleId).val();
+
+            if (typeof $.cookie(x + articleId) === 'undefined') {
+                $.cookie(x + articleId, 'orice', { path: '/' });
+                $.ajax({
+                    type: "POST", // request type here
+                    data: JSON.stringify({ articleId: articleId, votes: parseInt(x) }),
+                    contentType: "application/json",
+                    url: "http://localhost:57090/Home/sendvote",   // url here
+                    success: function (data) { // callback here
+                        location.reload();
+                    }
+                });
+            }
+        };
+
+        function undoVote(articleId, score) {
+
+            $.ajax({
+                type: "POST", // request type here
+                data: JSON.stringify({ articleId: articleId, votes: -parseInt(score) }),
+                contentType: "application/json",
+                url: "http://localhost:57090/Home/sendvote",   // url here
+                success: function (data) { // callback here
+                    location.reload();
+                }
+            });
+        };
+
+
+    </script>
+}
+
 
