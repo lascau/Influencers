@@ -9,7 +9,6 @@ namespace Influencers.Repository
 
         public int getVotesBy(int id);
 
-        public int NoAuthorsInTable();
 
     }
 }

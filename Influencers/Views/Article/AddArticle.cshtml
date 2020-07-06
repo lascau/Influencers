@@ -9,6 +9,19 @@
         font-family: Arial;
         background: #7eedbd;
     }
+    
+.GFG {
+    background-color: white;
+    border: 2px solid black;
+    color: black;
+    padding: 5px 20px;
+    text-align: center;
+    display: inline-block;
+    font-size: 20px;
+    margin: 10px 30px;
+    cursor: pointer;
+    text-decoration: none;
+}
 </style>
 <form asp-action="AddArticle" method="post">
     <input type="hidden" class="form-control" value="@DateTime.Now" asp-for="@Model.Date" />
@@ -39,7 +52,16 @@
             Content
         </div>
         <div class="col-10">
-            <textarea class="form-control" rows="5" id="content-container"asp-for="@Model.Content" required> </textarea>
+            <textarea class="form-control" rows="5" id="content-container" asp-for="@Model.Content" required> </textarea>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-2">
+            Tags
+        </div>
+        <div class="col-10">
+            <textarea placeholder="insert tags separeted by space" class="form-control" rows="2" id="content-container" required></textarea>
         </div>
     </div>
     <br>
@@ -49,6 +71,23 @@
             <button type="submit" class="btn btn-dark" id="addArticleButton">Add</button>
         </div>
     </div>
+
+    <div id="tags">
+        <div class="GFG" style="font-weight: bold">
+            #mancare
+        </div>
+        <div class="GFG" style="font-weight: bold">
+            #blabla
+        </div>
+        <script>
+           // document.getElementById("plus").addEventListener("click", function () {
+            //    console.log('hatz');
+            //});
+            //  <button id="btn" type="button">Enter</button>
+        </script>
+    </div>
+
+
 </form>
 
 @section scripts{

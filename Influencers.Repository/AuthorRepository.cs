@@ -54,11 +54,6 @@ namespace Influencers.Repository
             return (int)_dbContext.Author.Find(id).Votes;
         }
 
-        public int NoAuthorsInTable()
-        {
-            return _dbContext.Author.Count();
-        }
-
         public void Update(Author entity)
         {
             _dbContext.Author.Update(entity);
