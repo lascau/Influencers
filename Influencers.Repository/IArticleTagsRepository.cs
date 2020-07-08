@@ -9,5 +9,7 @@ namespace Influencers.Repository
     public interface IArticleTagsRepository : IRepository<ArticleTags>
     {
         public IEnumerable<Tags> GetTagsOfAnArticleBy(int articleId);
+
+        public void deleteAllArticleTagsBy(int articleId);
     }
 }

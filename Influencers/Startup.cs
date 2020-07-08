@@ -35,10 +35,14 @@ namespace Influencers
             // services
             services.AddScoped<IArticleService, ArticleService>();
             services.AddScoped<IAuthorService, AuthorService>();
+            services.AddScoped<ITagsService, TagsService>();
+            services.AddScoped<IArticleTagsService, ArticleTagsService>();
 
             // repositories
             services.AddScoped<IArticleRepository, ArticleRepository>();
             services.AddScoped<IAuthorRepository, AuthorRepository>();
+            services.AddScoped<ITagsRepository, TagsRepository>();
+            services.AddScoped<IArticleTagsRepository, ArticleTagsRepository>();
 
         }
 

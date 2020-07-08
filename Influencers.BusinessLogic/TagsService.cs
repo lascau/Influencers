@@ -1,4 +1,5 @@
 ﻿using Influencers.Models;
+using Influencers.Repository;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,26 +8,26 @@ namespace Influencers.BusinessLogic
 {
     public class TagsService: ITagsService
     {
-        private ITagsService _tagsService;
+        private ITagsRepository _tagsRepository;
 
-        public TagsService(ITagsService tagsService)
+        public TagsService(ITagsRepository tagsRepository)
         {
-            _tagsService = tagsService;
+            _tagsRepository = tagsRepository;
         }
 
         public void AddTags(string[] tags)
         {
-            _tagsService.AddTags(tags);
+            _tagsRepository.AddTags(tags);
         }
 
         public Tags GetTagBy(string tagName)
         {
-            return _tagsService.GetTagBy(tagName);
+            return _tagsRepository.GetTagBy(tagName);
         }
 
         public bool TagExists(string tagName)
         {
-            return _tagsService.TagExists(tagName);
+            return _tagsRepository.TagExists(tagName);
         }
     }
 }

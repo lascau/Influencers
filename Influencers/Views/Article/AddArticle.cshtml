@@ -61,7 +61,7 @@
             Tags
         </div>
         <div class="col-10">
-            <textarea placeholder="insert tags separeted by space" class="form-control" rows="2" id="content-container" required></textarea>
+            <textarea placeholder="insert tags separeted by space" class="form-control"  asp-for="@Model.Hashtags" rows="2" id="content-container" required></textarea>
         </div>
     </div>
     <br>
@@ -71,22 +71,6 @@
             <button type="submit" class="btn btn-dark" id="addArticleButton">Add</button>
         </div>
     </div>
-
-    <div id="tags">
-        <div class="GFG" style="font-weight: bold">
-            #mancare
-        </div>
-        <div class="GFG" style="font-weight: bold">
-            #blabla
-        </div>
-        <script>
-           // document.getElementById("plus").addEventListener("click", function () {
-            //    console.log('hatz');
-            //});
-            //  <button id="btn" type="button">Enter</button>
-        </script>
-    </div>
-
 
 </form>
 

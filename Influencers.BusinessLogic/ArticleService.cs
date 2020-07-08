@@ -12,11 +12,15 @@ namespace Influencers.BusinessLogic
     {
         private IArticleRepository _articleRepository;
         private IAuthorRepository _authorRepository;
+        private IArticleTagsRepository _articleTagsRepository;
+        private ITagsRepository _tagsRepository;
 
-        public ArticleService(IArticleRepository articleRepository, IAuthorRepository authorRepository)
+        public ArticleService(IArticleRepository articleRepository, IAuthorRepository authorRepository, IArticleTagsRepository articleTagsRepository, ITagsRepository tagsRepository)
         {
             _articleRepository = articleRepository;
             _authorRepository = authorRepository;
+            _articleTagsRepository = articleTagsRepository;
+            _tagsRepository = tagsRepository;
         }
 
         public void AddArticle(string email, string title, string content, DateTime date)
@@ -47,6 +51,15 @@ namespace Influencers.BusinessLogic
             articleViewModel.AuthorName = authorName;
             articleViewModel.Votes = (int)authorVotes;
 
+            var tagsOfCurrentArticles = _articleTagsRepository.GetTagsOfAnArticleBy(article.ArticleId);
+
+            string stringTags = "";
+            foreach (var tag in tagsOfCurrentArticles)
+            {
+                stringTags = stringTags + tag.Name + " ";
+            }
+            articleViewModel.Hashtags = stringTags;
+
             return articleViewModel;
         }
 
@@ -69,6 +82,14 @@ namespace Influencers.BusinessLogic
                 articleViewModel.AuthorName = authorName;
                 articleViewModel.Votes = _authorRepository.getVotesBy((int)article.AuthorId);
 
+                var tagsOfCurrentArticles = _articleTagsRepository.GetTagsOfAnArticleBy(article.ArticleId);
+
+                string stringTags = "";
+                foreach (var tag in tagsOfCurrentArticles)
+                {
+                    stringTags = stringTags + tag.Name + " ";
+                }
+                articleViewModel.Hashtags = stringTags;
                 //articleViewModel = article;
 
                 articlesViewModels.Add(articleViewModel);
@@ -84,12 +105,40 @@ namespace Influencers.BusinessLogic
             return articlesViewModels;
         }
 
-        public void UpdateArticle(int articleId, string title, string content)
+        public Article GetNewestAddedArticle(string title, string content, string email)
+        {
+            return _articleRepository.GetNewestAddedArticle(title, content, email);
+        }
+
+        public void UpdateArticle(int articleId, string title, string content, string tags)
         {
             var article = _articleRepository.Get(articleId);
             article.Title = title;
             article.Content = content;
+
+
+            if (tags != null)
+            {
+                // sterg legaturile cu tag-urile de la articolul repsectiv
+                _articleTagsRepository.deleteAllArticleTagsBy(articleId);
+
+                //Adaug tag-urile in bdd
+                foreach (var tag in tags.Split(""))
+                {
+                    _tagsRepository.Add(new Tags
+                    {
+                        Name = tag
+                    });
+                    // iau tagul nou creat
+                    var recentlyCreatedTag = _tagsRepository.GetTagBy(tag);
+
+                    // Dupa care leg articolul de noile taguri;
+                    _articleTagsRepository.Add(new ArticleTags { Article = article, ArticleId = article.ArticleId, Tags = recentlyCreatedTag, TagsId = recentlyCreatedTag.TagsId });
+                }
+            }
+
             _articleRepository.Update(article);
+
         }
     }
 }

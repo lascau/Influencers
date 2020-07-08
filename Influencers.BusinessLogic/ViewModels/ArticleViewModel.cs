@@ -19,6 +19,8 @@ namespace Influencers.BusinessLogic.ViewModels
         public string Email { get; set; }
 
         public int Votes { get; set; }
+        
+        public String Hashtags { get; set; }
 
     }
 }

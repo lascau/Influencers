@@ -18,6 +18,7 @@ namespace Influencers.Repository
         public void Add(Tags entity)
         {
             _dbContext.Tags.Add(entity);
+            _dbContext.SaveChanges();
         }
 
         public void AddTags(string[] tags)
@@ -29,7 +30,7 @@ namespace Influencers.Repository
                     Add(new Tags()
                     {
                         Name = tag
-                    }); 
+                    }) ; 
                 }
             }
         }
@@ -37,6 +38,7 @@ namespace Influencers.Repository
         public void Delete(Tags entity)
         {
             _dbContext.Tags.Remove(entity);
+            _dbContext.SaveChanges();
         }
 
         public Tags Get(int id)
@@ -67,6 +69,7 @@ namespace Influencers.Repository
         public void Update(Tags entity)
         {
             _dbContext.Tags.Update(entity);
+            _dbContext.SaveChanges();
         }
     }
 }

@@ -53,21 +53,25 @@
                 <center><h3 style="font-size:40px; font-family:'Arial'">@article.Title</h3></center>
                 <h5>@article.Date.Value.ToShortDateString() @article.AuthorName</h5>
                 <p style="font-size:25px; font-family:'Times New Roman'; color:#827e7e;">@article.Content.Substring(0, @article.Content.Length / 3)...</p>
-                <div class="row">
-                    <div class="Tags">
-                        Tags:
+                @if (article.Hashtags != "") {
+                    <div class="row">
+                        <div class="Tags">
+                            Tags:
+                        </div>
+ 
+                        @foreach (var tagName in article.Hashtags.Split(" ")) {
+
+                            string hash = "#";
+                            if (tagName != "")
+                            {
+                               <div class="DFD" style="font-weight: bold">
+                                   @hash@tagName        
+                                </div>
+                            }
+                        }
+
                     </div>
-                    <div class="DFD" style="font-weight: bold">
-                        #mancare
-                    </div>
-                    <div class="DFD" style="font-weight: bold">
-                        #blabla
-                    </div>
-                    <div class="DFD" style="font-weight: bold">
-                        #mancare
-                    </div>
-                </div>
-                
+                }
                 <div class="row">
                     <div class="col-sm-6">
 

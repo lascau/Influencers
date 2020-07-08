@@ -23,7 +23,18 @@ namespace Influencers.Repository
 
         public void Delete(ArticleTags entity)
         {
-            throw new NotImplementedException();
+            _dbContext.ArticleTags.Remove(entity);
+            _dbContext.SaveChanges();
+        }
+
+        public void deleteAllArticleTagsBy(int articleId)
+        {
+            var articleTags = _dbContext.ArticleTags.Where(a => a.ArticleId == articleId).AsEnumerable();
+            foreach(var articleTag in articleTags)
+            {
+                Delete(articleTag);
+                //int x = 23;
+            }
         }
 
         public ArticleTags Get(int id)
@@ -43,7 +54,8 @@ namespace Influencers.Repository
 
         public void Update(ArticleTags entity)
         {
-            throw new NotImplementedException();
+            _dbContext.ArticleTags.Update(entity);
+            _dbContext.SaveChanges();
         }
     }
 }

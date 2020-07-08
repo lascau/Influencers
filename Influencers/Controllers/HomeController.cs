@@ -16,16 +16,19 @@ namespace Influencers.Controllers
     {
         private IArticleService _articleService;
         private IAuthorService _authorSerivce;
+        private IArticleTagsService _articleTagsService;
         
-        public HomeController(IArticleService articleService, IAuthorService authorService)
+        public HomeController(IArticleService articleService, IAuthorService authorService, IArticleTagsService articleTagsService)
         {
             _articleService = articleService;
             _authorSerivce = authorService;
+            _articleTagsService = articleTagsService;
         }
 
         public IActionResult Index()
         {
             var articles = _articleService.GetArticles();
+
             return View(articles);
         }
 
@@ -40,6 +43,16 @@ namespace Influencers.Controllers
         public IActionResult EditThis(int id)
         {
             var article = _articleService.GetArticleBy(id);
+            /*
+            var tagsOfCurrentArticle = _articleTagsService.GetTagsOfArticleById(id);
+            string stringTags = "";
+
+            foreach (var tag in tagsOfCurrentArticle)
+            {
+                stringTags = stringTags + tag + " ";
+            }
+            article.Hashtags = stringTags;
+            */
             return View(article); 
         }
 
@@ -49,7 +62,8 @@ namespace Influencers.Controllers
             articleViewModel.ArticleId = id;
             _articleService.UpdateArticle(articleViewModel.ArticleId,
                                             articleViewModel.Title,
-                                            articleViewModel.Content);
+                                            articleViewModel.Content,
+                                            articleViewModel.Hashtags);
             return Redirect(Url.Action("Index", "Home"));
         }
 

@@ -38,7 +38,15 @@ namespace Influencers.Repository
             return _dbContext.Article.ToList();
         }
 
- 
+        public Article GetNewestAddedArticle(string title, string content, string email)
+        {
+            return _dbContext.Article.Where(a => a.Title == title)
+                .Where(a => a.Content == content)
+                .Where(a => a.Author.Email == email)
+                .SingleOrDefault();
+        }
+
+
         public void SortDecreasingByDate()
         {
             _dbContext.Article.OrderByDescending(article => article.Date);

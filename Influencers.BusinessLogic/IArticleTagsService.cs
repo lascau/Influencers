@@ -10,5 +10,6 @@ namespace Influencers.BusinessLogic
         public void Add(Tags tag, Article article);
 
         public IEnumerable<Tags> GetTagsOfArticleById(int articleId);
+
     }
 }

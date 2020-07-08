@@ -36,6 +36,15 @@
     </div>
     <br>
     <div class="row">
+        <div class="col-2">
+            Tags
+        </div>
+        <div class="col-10">
+            <textarea class="form-control" rows="5" asp-for="@Model.Hashtags" required>@Model.Hashtags</textarea>
+        </div>
+    </div>
+    <br />
+    <div class="row">
         <div class="col-6"></div>
         <div class="col-2">
             <button type="submit" class="btn btn-dark">Edit</button>
