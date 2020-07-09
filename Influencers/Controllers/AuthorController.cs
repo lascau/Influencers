@@ -39,7 +39,10 @@ namespace Influencers.Controllers
                 _authorService.AddAuthor(authorViewModel.Nickname,
                                      authorViewModel.Email,
                                      0);
-                _articleService.AddArticle(authorViewModel.Email, authorViewModel.ArticleTitle, authorViewModel.ArticleContent, DateTime.UtcNow);
+                if (authorViewModel.ArticleContent != null)
+                {
+                    _articleService.AddArticle(authorViewModel.Email, authorViewModel.ArticleTitle, authorViewModel.ArticleContent, DateTime.UtcNow);
+                }
                 return Redirect(Url.Action("Index", "Home"));
             }
             return View(authorViewModel);

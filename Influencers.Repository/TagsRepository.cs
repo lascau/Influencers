@@ -53,7 +53,7 @@ namespace Influencers.Repository
 
         public Tags GetTagBy(string tagName)
         {
-            return _dbContext.Tags.Where(tag => tag.Name == tagName).SingleOrDefault();
+            return _dbContext.Tags.Where(tag => tag.Name == tagName).FirstOrDefault();
         }
 
         public bool TagExists(string tagName)
